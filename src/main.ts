@@ -115,12 +115,12 @@ image.addEventListener("click", () => {
 
 const clickUpgradeButton = document.createElement("button");
 clickUpgradeButton.style.position = "fixed";
-clickUpgradeButton.style.top = "170px";
+clickUpgradeButton.style.top = "180px";
 clickUpgradeButton.style.left = "10px";
 document.body.appendChild(clickUpgradeButton);
 
 function updateClickUpgradeButton() {
-  clickUpgradeButton.textContent = `Buy Click Upgrade ($${clickUpgradeCost})`;
+  clickUpgradeButton.textContent = `Upgrade Accuracy ($${clickUpgradeCost})`;
 }
 
 clickUpgradeButton.addEventListener("click", () => {
@@ -143,7 +143,8 @@ function buyUpgradeOne() {
     updateMoneyDisplay();
     upgradeOneAmount += 1;
     upgradeOneCost += upgradeOneAmount * 1.5;
-    upgradeOneButton.textContent = `Buy Upgrade One ($${upgradeOneCost})`;
+    upgradeOneButton.textContent =
+      `Upgrade New Mouse ($${upgradeOneCost}) ($0.2 per second)`;
 
     setInterval(() => {
       playerMoney += upgradeOneAmount;
@@ -154,9 +155,10 @@ function buyUpgradeOne() {
 }
 
 const upgradeOneButton = document.createElement("button");
-upgradeOneButton.textContent = `Buy Upgrade One ($${upgradeOneCost})`;
+upgradeOneButton.textContent =
+  `Buy New Mouse ($${upgradeOneCost}) ($0.2 per second)`;
 upgradeOneButton.style.position = "fixed";
-upgradeOneButton.style.top = "50px";
+upgradeOneButton.style.top = "60px";
 upgradeOneButton.style.left = "10px";
 upgradeOneButton.addEventListener("click", buyUpgradeOne);
 
@@ -167,7 +169,8 @@ function buyUpgradeTwo() {
     updateMoneyDisplay();
     upgradeTwoAmount += 1;
     upgradeTwoCost += upgradeTwoAmount * 3;
-    upgradeTwoButton.textContent = `Buy Upgrade One ($${upgradeTwoCost})`;
+    upgradeTwoButton.textContent =
+      `Upgrade Aim Assist ($${upgradeTwoCost}) ($0.6 per second)`;
 
     setInterval(() => {
       playerMoney += upgradeTwoAmount * 3;
@@ -178,9 +181,10 @@ function buyUpgradeTwo() {
 }
 
 const upgradeTwoButton = document.createElement("button");
-upgradeTwoButton.textContent = `Buy Upgrade Two ($${upgradeTwoCost})`;
+upgradeTwoButton.textContent =
+  `Buy Aim Assist ($${upgradeTwoCost}) ($0.6 per second)`;
 upgradeTwoButton.style.position = "fixed";
-upgradeTwoButton.style.top = "90px";
+upgradeTwoButton.style.top = "100px";
 upgradeTwoButton.style.left = "10px";
 upgradeTwoButton.addEventListener("click", buyUpgradeTwo);
 
@@ -191,7 +195,8 @@ function buyUpgradeThree() {
     updateMoneyDisplay();
     upgradeThreeAmount += 1;
     upgradeThreeCost += upgradeThreeAmount * 8;
-    upgradeThreeButton.textContent = `Buy Upgrade One ($${upgradeThreeCost})`;
+    upgradeThreeButton.textContent =
+      `Upgrade AimBot ($${upgradeThreeCost}) ($1.6 per second)`;
 
     setInterval(() => {
       playerMoney += upgradeThreeAmount * 8;
@@ -202,9 +207,10 @@ function buyUpgradeThree() {
 }
 
 const upgradeThreeButton = document.createElement("button");
-upgradeThreeButton.textContent = `Buy Upgrade Three ($${upgradeThreeCost})`;
+upgradeThreeButton.textContent =
+  `Buy Aimbot ($${upgradeThreeCost}) ($1.6 per second)`;
 upgradeThreeButton.style.position = "fixed";
-upgradeThreeButton.style.top = "130px";
+upgradeThreeButton.style.top = "140px";
 upgradeThreeButton.style.left = "10px";
 upgradeThreeButton.addEventListener("click", buyUpgradeThree);
 
