@@ -46,8 +46,24 @@ function updateMoneyDisplay() {
   moneyCounter.textContent = `You have $${playerMoney}`;
 }
 
+const passiveIncomeCounter = document.createElement("p");
+passiveIncomeCounter.style.position = "fixed";
+passiveIncomeCounter.style.top = "10px";
+passiveIncomeCounter.style.right = "10px";
+passiveIncomeCounter.style.margin = "0";
+passiveIncomeCounter.style.fontSize = "36px";
+
+function updatePassiveIncomeDisplay() {
+  const passiveIncome = (upgradeOneAmount * 1 + upgradeTwoAmount * 3 +
+    upgradeThreeAmount * 8) / 5;
+  passiveIncomeCounter.textContent =
+    `Passive Income: $${passiveIncome} per second`;
+}
+
 updateMoneyDisplay();
+updatePassiveIncomeDisplay();
 document.body.appendChild(moneyCounter);
+document.body.appendChild(passiveIncomeCounter);
 
 image.addEventListener("click", () => {
   playerMoney += 1;
@@ -70,6 +86,7 @@ function buyUpgradeOne() {
       updateMoneyDisplay();
     }, 5000);
   }
+  updatePassiveIncomeDisplay();
 }
 
 const upgradeOneButton = document.createElement("button");
@@ -91,6 +108,7 @@ function buyUpgradeTwo() {
       updateMoneyDisplay();
     }, 5000);
   }
+  updatePassiveIncomeDisplay();
 }
 
 const upgradeTwoButton = document.createElement("button");
@@ -112,6 +130,7 @@ function buyUpgradeThree() {
       updateMoneyDisplay();
     }, 5000);
   }
+  updatePassiveIncomeDisplay();
 }
 
 const upgradeThreeButton = document.createElement("button");
