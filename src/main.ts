@@ -35,6 +35,9 @@ let upgradeOneCost = 10;
 let upgradeTwoCost = 50;
 let upgradeThreeCost = 100;
 
+let clickValue = 1;
+let clickUpgradeCost = 25;
+
 const moneyCounter = document.createElement("p");
 moneyCounter.style.position = "fixed";
 moneyCounter.style.top = "10px";
@@ -53,6 +56,18 @@ passiveIncomeCounter.style.right = "10px";
 passiveIncomeCounter.style.margin = "0";
 passiveIncomeCounter.style.fontSize = "36px";
 
+const clickValueCounter = document.createElement("p");
+clickValueCounter.style.position = "fixed";
+clickValueCounter.style.top = "56px";
+clickValueCounter.style.right = "10px";
+clickValueCounter.style.margin = "0";
+clickValueCounter.style.fontSize = "36px";
+document.body.appendChild(clickValueCounter);
+
+function updateClickValueDisplay() {
+  clickValueCounter.textContent = `Money per click: $${clickValue}`;
+}
+
 function updatePassiveIncomeDisplay() {
   const passiveIncome = (upgradeOneAmount * 1 + upgradeTwoAmount * 3 +
     upgradeThreeAmount * 8) / 5;
@@ -61,19 +76,44 @@ function updatePassiveIncomeDisplay() {
 }
 
 updateMoneyDisplay();
+updateClickValueDisplay();
 updatePassiveIncomeDisplay();
 document.body.appendChild(moneyCounter);
 document.body.appendChild(passiveIncomeCounter);
 
 image.addEventListener("click", () => {
-  playerMoney += 1;
+  playerMoney += clickValue;
   updateMoneyDisplay();
+  updateClickValueDisplay();
   image.style.transform = "scale(0.9)";
   setTimeout(() => {
     image.style.transform = "scale(1)";
   }, 50);
 });
 
+const clickUpgradeButton = document.createElement("button");
+clickUpgradeButton.style.position = "fixed";
+clickUpgradeButton.style.top = "170px";
+clickUpgradeButton.style.left = "10px";
+document.body.appendChild(clickUpgradeButton);
+
+function updateClickUpgradeButton() {
+  clickUpgradeButton.textContent = `Buy Click Upgrade ($${clickUpgradeCost})`;
+}
+
+clickUpgradeButton.addEventListener("click", () => {
+  if (playerMoney >= clickUpgradeCost) {
+    playerMoney -= clickUpgradeCost;
+    clickValue += 1;
+    clickUpgradeCost = Math.ceil(clickUpgradeCost * 1.5);
+    updateMoneyDisplay();
+    updateClickValueDisplay();
+    updateClickUpgradeButton();
+  }
+});
+
+updateClickValueDisplay();
+updateClickUpgradeButton();
 // Purchases 1 upgradeOne, which adds 1 dollar every 5 seconds per upgrade
 function buyUpgradeOne() {
   if (playerMoney >= upgradeOneCost) {
