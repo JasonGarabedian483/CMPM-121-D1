@@ -31,9 +31,9 @@ let upgradeOneAmount = 0;
 let upgradeTwoAmount = 0;
 let upgradeThreeAmount = 0;
 
-let haveUpgradeOne = false;
-let haveUpgradeTwo = false;
-let haveUpgradeThree = false;
+const haveUpgradeOne = false;
+const haveUpgradeTwo = false;
+const haveUpgradeThree = false;
 
 const moneyCounter = document.createElement("p");
 moneyCounter.style.position = "fixed";
