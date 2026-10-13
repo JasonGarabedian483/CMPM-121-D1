@@ -11,8 +11,18 @@ app.style.alignItems = "center";
 app.style.justifyContent = "center";
 app.style.height = "80vh";
 
+const fontLink = document.createElement("link");
+fontLink.rel = "stylesheet";
+fontLink.href = "https://fonts.googleapis.com/css2?family=Bungee&display=swap";
+document.head.appendChild(fontLink);
+
+document.title = "Aim Trainer Clicker";
+document.body.style.backgroundColor = "#ffffff";
+document.body.style.color = "#c8102e";
+document.body.style.fontFamily = "'Bungee', sans-serif";
+
 const heading = document.createElement("h1");
-heading.textContent = "Aim Clicker (idk)";
+heading.textContent = "Aim Trainer Clicker";
 
 const image = document.createElement("img");
 image.src = tileUrl;
@@ -20,9 +30,10 @@ image.alt = "A teal tile with a cream circle";
 image.width = 192;
 image.height = 192;
 image.style.cursor = "pointer";
+image.style.filter = "hue-rotate(170deg)";
 
 const message = document.createElement("p");
-message.textContent = "Your project starts here.";
+message.textContent = "Click the target!";
 
 app.append(heading, image, message);
 
@@ -190,3 +201,33 @@ upgradeThreeButton.addEventListener("click", buyUpgradeThree);
 document.body.appendChild(upgradeOneButton);
 document.body.appendChild(upgradeTwoButton);
 document.body.appendChild(upgradeThreeButton);
+
+function styleButton(button: HTMLButtonElement) {
+  button.style.backgroundColor = "#c8102e";
+  button.style.color = "#ffffff";
+  button.style.border = "2px solid #c8102e";
+  button.style.borderRadius = "6px";
+  button.style.padding = "6px 10px";
+  button.style.fontFamily = "inherit";
+  button.style.cursor = "pointer";
+}
+
+[clickUpgradeButton, upgradeOneButton, upgradeTwoButton, upgradeThreeButton]
+  .forEach(styleButton);
+
+function updateButtonColors() {
+  const buttons: [HTMLButtonElement, number][] = [
+    [clickUpgradeButton, clickUpgradeCost],
+    [upgradeOneButton, upgradeOneCost],
+    [upgradeTwoButton, upgradeTwoCost],
+    [upgradeThreeButton, upgradeThreeCost],
+  ];
+  for (const [button, cost] of buttons) {
+    const color = playerMoney >= cost ? "#2e9e44" : "#c8102e";
+    button.style.backgroundColor = color;
+    button.style.borderColor = color;
+  }
+}
+
+setInterval(updateButtonColors, 100);
+updateButtonColors();
