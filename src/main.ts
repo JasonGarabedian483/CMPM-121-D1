@@ -26,10 +26,22 @@ heading.textContent = "Aim Trainer Clicker";
 
 const image = document.createElement("img");
 image.src = tileUrl;
-image.alt = "A teal tile with a cream circle";
+image.alt = "A red target";
 image.width = 192;
 image.height = 192;
 image.style.cursor = "pointer";
+
+setInterval(() => {
+  const maxX = globalThis.innerWidth - image.width;
+  const maxY = globalThis.innerHeight - image.height;
+
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  image.style.position = "fixed";
+  image.style.left = `${randomX}px`;
+  image.style.top = `${randomY}px`;
+}, 5000);
 
 const message = document.createElement("p");
 message.textContent = "Click the target!";
@@ -37,10 +49,10 @@ message.textContent = "Click the target!";
 app.append(heading, image, message);
 
 let playerMoney = 0;
+
 let upgradeOneAmount = 0;
 let upgradeTwoAmount = 0;
 let upgradeThreeAmount = 0;
-
 let upgradeOneCost = 10;
 let upgradeTwoCost = 50;
 let upgradeThreeCost = 100;
@@ -147,7 +159,6 @@ upgradeOneButton.style.position = "fixed";
 upgradeOneButton.style.top = "50px";
 upgradeOneButton.style.left = "10px";
 upgradeOneButton.addEventListener("click", buyUpgradeOne);
-//document.body.appendChild(upgradeOneButton);
 
 // Purchases 1 upgradeTwo, which adds 3 dollars every 5 seconds per upgrade
 function buyUpgradeTwo() {
