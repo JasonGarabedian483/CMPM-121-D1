@@ -31,9 +31,9 @@ let upgradeOneAmount = 0;
 let upgradeTwoAmount = 0;
 let upgradeThreeAmount = 0;
 
-const haveUpgradeOne = false;
-const haveUpgradeTwo = false;
-const haveUpgradeThree = false;
+let upgradeOneCost = 10;
+let upgradeTwoCost = 50;
+let upgradeThreeCost = 100;
 
 const moneyCounter = document.createElement("p");
 moneyCounter.style.position = "fixed";
@@ -76,10 +76,12 @@ image.addEventListener("click", () => {
 
 // Purchases 1 upgradeOne, which adds 1 dollar every 5 seconds per upgrade
 function buyUpgradeOne() {
-  if (!haveUpgradeOne && playerMoney >= 10) {
-    playerMoney -= 10;
+  if (playerMoney >= upgradeOneCost) {
+    playerMoney -= upgradeOneCost;
     updateMoneyDisplay();
     upgradeOneAmount += 1;
+    upgradeOneCost += upgradeOneAmount * 1.5;
+    upgradeOneButton.textContent = `Buy Upgrade One ($${upgradeOneCost})`;
 
     setInterval(() => {
       playerMoney += upgradeOneAmount;
@@ -90,18 +92,21 @@ function buyUpgradeOne() {
 }
 
 const upgradeOneButton = document.createElement("button");
-upgradeOneButton.textContent = "Buy Upgrade One ($10)";
+upgradeOneButton.textContent = `Buy Upgrade One ($${upgradeOneCost})`;
 upgradeOneButton.style.position = "fixed";
 upgradeOneButton.style.top = "50px";
 upgradeOneButton.style.left = "10px";
 upgradeOneButton.addEventListener("click", buyUpgradeOne);
+//document.body.appendChild(upgradeOneButton);
 
 // Purchases 1 upgradeTwo, which adds 3 dollars every 5 seconds per upgrade
 function buyUpgradeTwo() {
-  if (!haveUpgradeTwo && playerMoney >= 50) {
-    playerMoney -= 50;
+  if (playerMoney >= upgradeTwoCost) {
+    playerMoney -= upgradeTwoCost;
     updateMoneyDisplay();
     upgradeTwoAmount += 1;
+    upgradeTwoCost += upgradeTwoAmount * 3;
+    upgradeTwoButton.textContent = `Buy Upgrade One ($${upgradeTwoCost})`;
 
     setInterval(() => {
       playerMoney += upgradeTwoAmount * 3;
@@ -112,7 +117,7 @@ function buyUpgradeTwo() {
 }
 
 const upgradeTwoButton = document.createElement("button");
-upgradeTwoButton.textContent = "Buy Upgrade Two ($50)";
+upgradeTwoButton.textContent = `Buy Upgrade Two ($${upgradeTwoCost})`;
 upgradeTwoButton.style.position = "fixed";
 upgradeTwoButton.style.top = "90px";
 upgradeTwoButton.style.left = "10px";
@@ -120,10 +125,12 @@ upgradeTwoButton.addEventListener("click", buyUpgradeTwo);
 
 // Purchases 1 upgradeThree, which adds 8 dollars every 5 seconds per upgrade
 function buyUpgradeThree() {
-  if (!haveUpgradeThree && playerMoney >= 100) {
-    playerMoney -= 100;
+  if (playerMoney >= upgradeThreeCost) {
+    playerMoney -= upgradeThreeCost;
     updateMoneyDisplay();
     upgradeThreeAmount += 1;
+    upgradeThreeCost += upgradeThreeAmount * 8;
+    upgradeThreeButton.textContent = `Buy Upgrade One ($${upgradeThreeCost})`;
 
     setInterval(() => {
       playerMoney += upgradeThreeAmount * 8;
@@ -134,7 +141,7 @@ function buyUpgradeThree() {
 }
 
 const upgradeThreeButton = document.createElement("button");
-upgradeThreeButton.textContent = "Buy Upgrade Three ($100)";
+upgradeThreeButton.textContent = `Buy Upgrade Three ($${upgradeThreeCost})`;
 upgradeThreeButton.style.position = "fixed";
 upgradeThreeButton.style.top = "130px";
 upgradeThreeButton.style.left = "10px";
