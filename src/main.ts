@@ -30,7 +30,6 @@ image.alt = "A teal tile with a cream circle";
 image.width = 192;
 image.height = 192;
 image.style.cursor = "pointer";
-image.style.filter = "hue-rotate(170deg)";
 
 const message = document.createElement("p");
 message.textContent = "Click the target!";
