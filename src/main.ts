@@ -245,5 +245,31 @@ function updateButtonColors() {
   }
 }
 
+// Oliver Stephenson - Section 3 Fork
+function hiddenButton(button: HTMLButtonElement) {
+  button.style.opacity = "0";
+  button.style.color = "#ffffff";
+  button.style.border = "2px";
+  button.style.borderRadius = "6px";
+  button.style.cursor = "pointer";
+}
+
+const secretButton = document.createElement("button");
+secretButton.textContent = "Get 100 Money";
+secretButton.style.position = "fixed";
+secretButton.style.bottom = "0";
+secretButton.style.right = "0";
+
+hiddenButton(secretButton);
+
+secretButton.addEventListener("click", () => {
+  playerMoney += 100;
+  updateMoneyDisplay();
+  updateButtonColors();
+});
+
+document.body.appendChild(secretButton);
+// --- //
+
 setInterval(updateButtonColors, 100);
 updateButtonColors();
