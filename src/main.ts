@@ -108,8 +108,10 @@ image.addEventListener("click", () => {
   updateMoneyDisplay();
   updateClickValueDisplay();
   image.style.transform = "scale(0.9)";
+  image.style.filter = "brightness(0.5)";
   setTimeout(() => {
     image.style.transform = "scale(1)";
+    image.style.filter = "brightness(1)";
   }, 50);
 });
 
@@ -145,7 +147,6 @@ function buyUpgradeOne() {
     upgradeOneCost += upgradeOneAmount * 1.5;
     upgradeOneButton.textContent =
       `Upgrade New Mouse ($${upgradeOneCost}) ($0.2 per second)`;
-
     setInterval(() => {
       playerMoney += upgradeOneAmount;
       updateMoneyDisplay();
