@@ -50,12 +50,30 @@ app.append(heading, image, message);
 
 let playerMoney = 0;
 
-let upgradeOneAmount = 0;
-let upgradeTwoAmount = 0;
-let upgradeThreeAmount = 0;
-let upgradeOneCost = 10;
-let upgradeTwoCost = 50;
-let upgradeThreeCost = 100;
+// type to define upgrade
+type Upgrade = {
+  name: string;
+  amount: number;
+  cost: number;
+  // Money paid every 5 seconds per unit owned, and how much the price grows.
+  perFiveSeconds: number;
+  costStep: number;
+  button?: HTMLButtonElement;
+};
+
+// creation of upgrades
+const upgrades: Upgrade[] = [
+  { name: "New Mouse", amount: 0, cost: 10, perFiveSeconds: 1, costStep: 1.5 },
+  { name: "Aim Assist", amount: 0, cost: 50, perFiveSeconds: 3, costStep: 3 },
+  { name: "Aimbot", amount: 0, cost: 100, perFiveSeconds: 8, costStep: 8 },
+  {
+    name: "Tracking Drill",
+    amount: 0,
+    cost: 250,
+    perFiveSeconds: 20,
+    costStep: 20,
+  },
+];
 
 let clickValue = 1;
 let clickUpgradeCost = 25;
@@ -68,7 +86,7 @@ moneyCounter.style.margin = "0";
 moneyCounter.style.fontSize = "36px";
 
 function updateMoneyDisplay() {
-  moneyCounter.textContent = `You have $${playerMoney}`;
+  moneyCounter.textContent = `You have $${playerMoney.toFixed(2)}`;
 }
 
 const passiveIncomeCounter = document.createElement("p");
@@ -90,9 +108,17 @@ function updateClickValueDisplay() {
   clickValueCounter.textContent = `Money per click: $${clickValue}`;
 }
 
+// passive income from upgrades
+function passiveIncomePerSecond() {
+  const perFiveSeconds = upgrades.reduce(
+    (sum, upgrade) => sum + upgrade.amount * upgrade.perFiveSeconds,
+    0,
+  );
+  return perFiveSeconds / 5;
+}
+
 function updatePassiveIncomeDisplay() {
-  const passiveIncome = (upgradeOneAmount * 1 + upgradeTwoAmount * 3 +
-    upgradeThreeAmount * 8) / 5;
+  const passiveIncome = passiveIncomePerSecond();
   passiveIncomeCounter.textContent =
     `Passive Income: $${passiveIncome} per second`;
 }
@@ -117,7 +143,7 @@ image.addEventListener("click", () => {
 
 const clickUpgradeButton = document.createElement("button");
 clickUpgradeButton.style.position = "fixed";
-clickUpgradeButton.style.top = "180px";
+clickUpgradeButton.style.top = "220px";
 clickUpgradeButton.style.left = "10px";
 document.body.appendChild(clickUpgradeButton);
 
@@ -138,87 +164,43 @@ clickUpgradeButton.addEventListener("click", () => {
 
 updateClickValueDisplay();
 updateClickUpgradeButton();
-// Purchases 1 upgradeOne, which adds 1 dollar every 5 seconds per upgrade
-function buyUpgradeOne() {
-  if (playerMoney >= upgradeOneCost) {
-    playerMoney -= upgradeOneCost;
-    updateMoneyDisplay();
-    upgradeOneAmount += 1;
-    upgradeOneCost += upgradeOneAmount * 1.5;
-    upgradeOneButton.textContent =
-      `Upgrade New Mouse ($${upgradeOneCost}) ($0.2 per second)`;
-    setInterval(() => {
-      playerMoney += upgradeOneAmount;
-      updateMoneyDisplay();
-    }, 5000);
-  }
+
+// buying first upgrade function
+function buyUpgrade(upgrade: Upgrade) {
+  if (playerMoney < upgrade.cost) return;
+
+  playerMoney -= upgrade.cost;
+  upgrade.amount += 1;
+  upgrade.cost += upgrade.amount * upgrade.costStep;
+  updateMoneyDisplay();
   updatePassiveIncomeDisplay();
+  updateUpgradeButtons();
 }
 
-const upgradeOneButton = document.createElement("button");
-upgradeOneButton.textContent =
-  `Buy New Mouse ($${upgradeOneCost}) ($0.2 per second)`;
-upgradeOneButton.style.position = "fixed";
-upgradeOneButton.style.top = "60px";
-upgradeOneButton.style.left = "10px";
-upgradeOneButton.addEventListener("click", buyUpgradeOne);
-
-// Purchases 1 upgradeTwo, which adds 3 dollars every 5 seconds per upgrade
-function buyUpgradeTwo() {
-  if (playerMoney >= upgradeTwoCost) {
-    playerMoney -= upgradeTwoCost;
-    updateMoneyDisplay();
-    upgradeTwoAmount += 1;
-    upgradeTwoCost += upgradeTwoAmount * 3;
-    upgradeTwoButton.textContent =
-      `Upgrade Aim Assist ($${upgradeTwoCost}) ($0.6 per second)`;
-
-    setInterval(() => {
-      playerMoney += upgradeTwoAmount * 3;
-      updateMoneyDisplay();
-    }, 5000);
+// buying more upgrades function
+// Solved the "Duplicated Code" code smell by creating a function to handle all upgrades, rather than calling each individual function
+function updateUpgradeButtons() {
+  for (const upgrade of upgrades) {
+    const verb = upgrade.amount === 0 ? "Buy" : "Upgrade";
+    const perSecond = upgrade.perFiveSeconds / 5;
+    upgrade.button!.textContent =
+      `${verb} ${upgrade.name} ($${upgrade.cost}) ($${perSecond} per second)`;
   }
-  updatePassiveIncomeDisplay();
 }
 
-const upgradeTwoButton = document.createElement("button");
-upgradeTwoButton.textContent =
-  `Buy Aim Assist ($${upgradeTwoCost}) ($0.6 per second)`;
-upgradeTwoButton.style.position = "fixed";
-upgradeTwoButton.style.top = "100px";
-upgradeTwoButton.style.left = "10px";
-upgradeTwoButton.addEventListener("click", buyUpgradeTwo);
-
-// Purchases 1 upgradeThree, which adds 8 dollars every 5 seconds per upgrade
-function buyUpgradeThree() {
-  if (playerMoney >= upgradeThreeCost) {
-    playerMoney -= upgradeThreeCost;
-    updateMoneyDisplay();
-    upgradeThreeAmount += 1;
-    upgradeThreeCost += upgradeThreeAmount * 8;
-    upgradeThreeButton.textContent =
-      `Upgrade AimBot ($${upgradeThreeCost}) ($1.6 per second)`;
-
-    setInterval(() => {
-      playerMoney += upgradeThreeAmount * 8;
-      updateMoneyDisplay();
-    }, 5000);
-  }
-  updatePassiveIncomeDisplay();
+// upgrade buttons
+// Solved the "Duplicated Code" code smell by creating a function to handle all upgrades, rather than calling each individual function
+for (const [index, upgrade] of upgrades.entries()) {
+  const button = document.createElement("button");
+  button.style.position = "fixed";
+  button.style.top = `${60 + index * 40}px`;
+  button.style.left = "10px";
+  button.addEventListener("click", () => buyUpgrade(upgrade));
+  upgrade.button = button;
+  document.body.appendChild(button);
 }
 
-const upgradeThreeButton = document.createElement("button");
-upgradeThreeButton.textContent =
-  `Buy Aimbot ($${upgradeThreeCost}) ($1.6 per second)`;
-upgradeThreeButton.style.position = "fixed";
-upgradeThreeButton.style.top = "140px";
-upgradeThreeButton.style.left = "10px";
-upgradeThreeButton.addEventListener("click", buyUpgradeThree);
-
-document.body.appendChild(upgradeOneButton);
-document.body.appendChild(upgradeTwoButton);
-document.body.appendChild(upgradeThreeButton);
-
+// button stylization
 function styleButton(button: HTMLButtonElement) {
   button.style.backgroundColor = "#c8102e";
   button.style.color = "#ffffff";
@@ -229,15 +211,17 @@ function styleButton(button: HTMLButtonElement) {
   button.style.cursor = "pointer";
 }
 
-[clickUpgradeButton, upgradeOneButton, upgradeTwoButton, upgradeThreeButton]
-  .forEach(styleButton);
+styleButton(clickUpgradeButton);
+upgrades.forEach((upgrade) => styleButton(upgrade.button!));
+updateUpgradeButtons();
 
 function updateButtonColors() {
   const buttons: [HTMLButtonElement, number][] = [
     [clickUpgradeButton, clickUpgradeCost],
-    [upgradeOneButton, upgradeOneCost],
-    [upgradeTwoButton, upgradeTwoCost],
-    [upgradeThreeButton, upgradeThreeCost],
+    ...upgrades.map((upgrade): [HTMLButtonElement, number] => [
+      upgrade.button!,
+      upgrade.cost,
+    ]),
   ];
   for (const [button, cost] of buttons) {
     const color = playerMoney >= cost ? "#2e9e44" : "#c8102e";
@@ -270,7 +254,17 @@ secretButton.addEventListener("click", () => {
 });
 
 document.body.appendChild(secretButton);
-// --- //
+
+let lastTick = performance.now();
+
+setInterval(() => {
+  const now = performance.now();
+  const elapsedSeconds = (now - lastTick) / 1000;
+  lastTick = now;
+
+  playerMoney += passiveIncomePerSecond() * elapsedSeconds;
+  updateMoneyDisplay();
+}, 100);
 
 setInterval(updateButtonColors, 100);
 updateButtonColors();
