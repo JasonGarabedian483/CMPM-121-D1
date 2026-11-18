@@ -37,13 +37,13 @@ To add an upgrade, add one row with `name`, `amount: 0`, `cost`, `perFiveSeconds
 
 ## Revision: one model instead of three timers
 
-The first version had near-duplicate `buyUpgradeOne/Two/Three` functions, and
-each purchase started its own `setInterval` paying the current owned amount, so
-income compounded and no longer matched the displayed rate.
+The first version used multiple duplicated functions to handle each upgrade, with each
+having its own `setInterval` to pay out the passive income. This lead to the income not
+properly matching the displayed rate.
 
 Now one `buyUpgrade()` handles every upgrade and one loop pays
 `passiveIncomePerSecond()` times the real seconds since the last tick
-(`performance.now()`). Income follows real time and always equals the "$x per
+`performance.now()`. Income follows real time and always equals the "$x per
 second" readout, and adding the Tracking Drill was one table row instead of
 another copied function
 ([commits](https://github.com/JasonGarabedian483/CMPM-121-D1/commits/main)).
